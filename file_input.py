@@ -111,7 +111,7 @@ class file_input(commands.Cog):
 
             address = discord.ui.TextInput(
                 label="The wallet address to send the NFT to",
-                placeholder="ethereum wallet address",
+                placeholder="wallet address",
                 min_length=42,
                 max_length=42,
             )
