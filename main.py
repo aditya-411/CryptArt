@@ -1,5 +1,7 @@
+import json
+
 import discord
-from discord.ext import commands as cmd
+from discord.ext import commands as cmd, tasks
 from file_input import file_input
 
 
@@ -13,9 +15,20 @@ intents.messages = True
 intents.message_content = True
 bot = cmd.Bot(intents=intents, command_prefix="!")
 
+
+
+@tasks.loop(seconds=5)
+async def update_custom_status():
+    minted_NFTs = None
+    with open("NFTs_minted.json", "r+") as json_file:
+        minted_NFTs = json.load(json_file)['minted']
+    custom_status = f"Minted {minted_NFTs} NFTs so far"
+    await bot.change_presence(activity=discord.Game(name=custom_status))
+
 @bot.event
 async def on_ready():
     print('bot is up')
     await bot.add_cog(file_input(bot))
+    update_custom_status.start()
 
 bot.run(os.getenv("token"))

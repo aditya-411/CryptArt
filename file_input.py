@@ -1,6 +1,9 @@
+import json
+
 import discord
 from discord.ext import commands
 from minter import mint_on_polygon, mint_on_eth
+
 
 
 class file_input(commands.Cog):
@@ -19,7 +22,7 @@ class file_input(commands.Cog):
 
     class Confirm(discord.ui.View):
         def __init__(self):
-            super().__init__(timeout=5)
+            super().__init__(timeout=300)
             self.value = None
 
         async def on_timeout(self):
@@ -62,7 +65,7 @@ class file_input(commands.Cog):
     async def on_message(self, message):
         if message.attachments == None:
             return
-        favourable_files = [i for i in message.attachments if i.filename.split(".")[1] in ["gif", "png", "jpeg", "jpg", "mp3", "mp4"]]
+        favourable_files = [i for i in message.attachments if i.filename.split(".")[1] in ["gif", "png", "jpeg", "jpg", "mp4"]]
         if len(favourable_files) == 0:
             return
 
@@ -264,8 +267,17 @@ class file_input(commands.Cog):
             embed.add_field(name="Transaction hash", value=x[15])
             embed.add_field(name="Transaction_external_url", value=x[19])
             embed.add_field(name="Wallet address", value=x[23])
+            embed.set_footer(text="Thanks for using our bot!")
             if file_to_mint.filename.split('.')[1] in ['png', 'gif', 'jpg', 'jpeg']:
                 embed.set_thumbnail(url=file_to_mint.url)
             await msg.edit(content="Successfully minted on blockchain", embed = embed)
+
+            x = None
+            with open("NFTs_minted.json", "r+") as json_file:
+                x = json.load(json_file)['minted']
+                x+=1
+            with open("NFTs_minted.json", "w+") as json_file:
+                json.dump({'minted':x}, json_file)
+
 
 
