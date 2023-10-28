@@ -3,7 +3,8 @@ import json
 import discord
 from discord.ext import commands as cmd, tasks
 from file_input import file_input
-
+from discord import app_commands
+from help import Help
 
 from dotenv import load_dotenv
 import os
@@ -14,6 +15,7 @@ intents.members = True
 intents.messages = True
 intents.message_content = True
 bot = cmd.Bot(intents=intents, command_prefix="!")
+bot.remove_command('help')
 
 
 
@@ -29,6 +31,8 @@ async def update_custom_status():
 async def on_ready():
     print('bot is up')
     await bot.add_cog(file_input(bot))
+    await bot.add_cog(Help(bot))
+    await bot.tree.sync()
     update_custom_status.start()
 
 bot.run(os.getenv("token"))
