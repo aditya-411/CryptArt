@@ -258,15 +258,15 @@ class file_input(commands.Cog):
             await msg.edit(content="The address that you entered is probably wrong or there was some error while minting. Please try again.", embed=embed)
             return
         else:
-            x = response.split('"')
+            x = json.loads(response)
             embed = discord.Embed(colour=discord.Colour.green(), title="Success!")
-            embed.add_field(name="NFT name", value= x[27])
-            embed.add_field(name="NFT description", value=x[31])
+            embed.add_field(name="NFT name", value= x['name'])
+            embed.add_field(name="NFT description", value=x['description'])
             embed.add_field(name="Blockchain", value= blockchain)
-            embed.add_field(name="Contract address", value=x[11])
-            embed.add_field(name="Transaction hash", value=x[15])
-            embed.add_field(name="Transaction_external_url", value=x[19])
-            embed.add_field(name="Wallet address", value=x[23])
+            embed.add_field(name="Contract address", value=x['contract_address'])
+            embed.add_field(name="Transaction hash", value=x['transaction_hash'])
+            embed.add_field(name="Transaction_external_url", value=x['transaction_external_url'])
+            embed.add_field(name="Wallet address", value=x['mint_to_address'])
             embed.set_footer(text="Thanks for using our bot!")
             if file_to_mint.filename.split('.')[1] in ['png', 'gif', 'jpg', 'jpeg']:
                 embed.set_thumbnail(url=file_to_mint.url)

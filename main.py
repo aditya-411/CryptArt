@@ -5,6 +5,7 @@ from discord.ext import commands as cmd, tasks
 from file_input import file_input
 from discord import app_commands
 from help import Help
+from display_nft import display_nft
 
 from dotenv import load_dotenv
 import os
@@ -32,6 +33,7 @@ async def on_ready():
     print('bot is up')
     await bot.add_cog(file_input(bot))
     await bot.add_cog(Help(bot))
+    await bot.add_cog(display_nft(bot))
     await bot.tree.sync()
     update_custom_status.start()
 

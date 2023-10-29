@@ -1,3 +1,4 @@
+import json
 import requests
 import os
 from dotenv import load_dotenv
@@ -10,7 +11,7 @@ def user_nft(address, chain):
         "chain": chain,
         "page_size": 50,
         "continuation": None,
-        "include": "default"
+        "include": "file_information"
     }
 
     headers = {
@@ -26,6 +27,4 @@ def user_nft(address, chain):
         params=query_params,
     )
 
-    print(response.text)
-
-user_nft("0xde5F7152F7A0Ec65CDf8471CcfB468094f3875Dc", "goerli")
+    return(json.loads(response.text))
