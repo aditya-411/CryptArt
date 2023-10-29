@@ -20,7 +20,7 @@ bot.remove_command('help')
 
 
 
-@tasks.loop(seconds=5)
+@tasks.loop(seconds=60)
 async def update_custom_status():
     minted_NFTs = None
     with open("NFTs_minted.json", "r+") as json_file:
