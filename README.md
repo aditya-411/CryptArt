@@ -8,7 +8,7 @@ Our Project is based on helping the users convert their artwork which is in the 
 
 1. File detection in discord chat
 2. NFT minting from the detected files with help of REST API
-3. Choice of blockchain between Ethereum and Polygon for minting
+3. Choice of blockchain between Ethereum testnet Goerli and Polygon mainnet for minting
 4. ability to show all NFTs linked to a wallet with an interactive menu to navigate through the list.
 5. Counter which counts how many NFTs the bot has minted so far. Visible in bot’s profile on discord
 
@@ -34,7 +34,8 @@ To set up your own instance of this bot:
 2. create a discord application from developer portal and create a bot
 3. add the bot to a server
 4. add a .env file and store your NFTport API key with name “minter_key” and discord bot token with name “token”
-5. run the [main.py](http://main.py) file
+5. pip install discord.py
+6. run the [main.py](http://main.py) file
 
 ### Bot commands and events:
 
