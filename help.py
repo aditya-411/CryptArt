@@ -30,6 +30,9 @@ class Help(commands.Cog):
         embed.add_field(name="How to mint your NFTs to a specific block chain?",
                         value="For minting your NFTs onto any of the blockchains it is necessary for you to have a pre existing Crypto-Wallet. I KNOW! I KNOW! that you are worried about the security aspect of it but I will make this process secure by not asking about your private key and by continuing the minting process in you dms ;)",
                         inline=False)
+        embed.add_field(name="What does the /list slash command do?",
+                        value="It enables you to list out all the NFTs stored in any crypto wallet on polygon or ethereum blockchain with an interactive menu to navigate through it",
+                        inline=False)
         embed.set_footer(text="- made with 💖 by our small team _H4CK3RS_")
 
         await interaction.response.send_message(embed=embed)
