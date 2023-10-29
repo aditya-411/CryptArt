@@ -14,30 +14,41 @@ class display_nft(commands.Cog):
     @app_commands.describe(wallet="The address of the wallet you want to see NFTs of")
     async def list(self, interaction, wallet: str):
         class choose_blockchain(discord.ui.View):
-            def __init__(self):
+            def __init__(self, user_id):
                 super().__init__()
                 self.value = None
+                self.og_user = user_id
 
             @discord.ui.button(label='Polygon', style=discord.ButtonStyle.blurple)
             async def poly(self, interaction: discord.Interaction, button: discord.ui.Button):
+                if interaction.user.id != self.og_user:
+                    await interaction.response.send_message(content="Hey you're not allowed to interact with this menu because you didn't start it.", ephemeral=True)
+                    return
                 self.value = 'polygon'
                 await interaction.response.defer()
                 self.stop()
 
             @discord.ui.button(label='Ethereum', style=discord.ButtonStyle.blurple)
-            async def cancel(self, interaction: discord.Interaction, button: discord.ui.Button):
+            async def eth(self, interaction: discord.Interaction, button: discord.ui.Button):
+                if interaction.user.id != self.og_user:
+                    await interaction.response.send_message(content="Hey you're not allowed to interact with this menu because you didn't start it.", ephemeral=True)
+                    return
                 self.value = 'eth'
                 await interaction.response.defer()
                 self.stop()
 
         class control_embed(discord.ui.View):
-            def __init__(self, embeds_list):
+            def __init__(self, embeds_list, user_id):
                 super().__init__(timeout=300)
                 self.value = 0
                 self.embeds_list = embeds_list
+                self.og_user = user_id
 
             @discord.ui.button(emoji="⬅️", style=discord.ButtonStyle.blurple)
             async def back(self, interaction: discord.Interaction, button):
+                if interaction.user.id != self.og_user:
+                    await interaction.response.send_message(content="Hey you're not allowed to interact with this menu because you didn't start it.", ephemeral=True)
+                    return
                 self.value -=1
                 if self.value <0:
                     self.value = len(self.embeds_list)-1
@@ -45,6 +56,9 @@ class display_nft(commands.Cog):
 
             @discord.ui.button(emoji="➡️", style=discord.ButtonStyle.blurple)
             async def forward(self, interaction: discord.Interaction, button):
+                if interaction.user.id != self.og_user:
+                    await interaction.response.send_message(content="Hey you're not allowed to interact with this menu because you didn't start it.", ephemeral=True)
+                    return
                 self.value +=1
                 if self.value == len(embed_list):
                     self.value = 0
@@ -56,7 +70,7 @@ class display_nft(commands.Cog):
                 await interaction.edit_original_response(view=self)
 
 
-        view = choose_blockchain()
+        view = choose_blockchain(interaction.user.id)
         await interaction.response.send_message(content="Choose your blockchain!!", view=view, embed=None)
         await view.wait()
 
@@ -88,6 +102,6 @@ class display_nft(commands.Cog):
 
 
 
-        control = control_embed(embed_list)
+        control = control_embed(embed_list, interaction.user.id)
         await interaction.edit_original_response(content=f"NFTs linked with {wallet}", view=control, embed=embed_list[0])
 

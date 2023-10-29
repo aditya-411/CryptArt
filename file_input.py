@@ -22,7 +22,7 @@ class file_input(commands.Cog):
 
     class Confirm(discord.ui.View):
         def __init__(self):
-            super().__init__(timeout=300)
+            super().__init__(timeout=60)
             self.value = None
 
         async def on_timeout(self):
@@ -132,7 +132,7 @@ class file_input(commands.Cog):
         #if only one favorable file, choose it
         if len(favourable_files) == 1:
             file_to_mint = favourable_files[0]
-            view = discord.ui.View(timeout=300)
+            view = discord.ui.View(timeout=60)
             button = discord.ui.Button(label="open form")
             modal = take_NFT_details()
             async def callback(interaction):
@@ -171,7 +171,7 @@ class file_input(commands.Cog):
             #class to define a view with a value parameter as well which will store which button was chosen by mapping the unique id
             class choose_buttons(discord.ui.View):
                 def __init__(self):
-                    super().__init__(timeout=300)
+                    super().__init__(timeout=60)
                     self.value = None
                     self.button_ids = []
                     self.modal = None
@@ -255,6 +255,7 @@ class file_input(commands.Cog):
             response = mint_on_eth(file_to_mint.url, file_to_mint.filename.split('.')[1], name, description, address)
         if "error" in response:
             embed.colour=discord.Colour.red()
+            embed.title="We can't mint your NFT right now 😔"
             await msg.edit(content="The address that you entered is probably wrong or there was some error while minting. Please try again.", embed=embed)
             return
         else:
